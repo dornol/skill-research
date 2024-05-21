@@ -41,11 +41,4 @@
         </root>
     </springProfile>
 
-    <springProfile name="prod">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="LOGSTASH" />
-        </root>
-    </springProfile>
-
 </configuration>
