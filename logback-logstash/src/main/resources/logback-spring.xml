@@ -5,16 +5,17 @@
     <springProperty name="PROJECT_NAME" source="spring.application.name" />
     <springProperty name="PROFILE" source="spring.profiles.active" />
     <springProperty name="LOGSTASH_URL" source="logstash.url" />
+    <springProperty name="LOGSTASH_SSL_PASSWORD" source="logstash.ssl.password" />
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_URL}</destination>
+        <destination>${LOGSTASH_URL:-127.0.0.1:5044}</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc />
                 <pattern>
                     <pattern>
                         {
-                            "app":"${PROJECT_NAME:-application}",
+                            "app":"${PROJECT_NAME}",
                             "profile":"${PROFILE}",
                             "hostname":"${hostname}"
                         }
@@ -32,6 +33,17 @@
                 <version />
             </providers>
         </encoder>
+        <ssl>
+            <trustStore>
+                <location>classpath:logstash/ca.jks</location>
+                <password>${LOGSTASH_SSL_PASSWORD}</password>
+            </trustStore>
+            <keyStore>
+                <location>classpath:logstash/client.p12</location>
+                <password>${LOGSTASH_SSL_PASSWORD}</password>
+                <type>PKCS12</type>
+            </keyStore>
+        </ssl>
     </appender>
 
     <springProfile name="local">
