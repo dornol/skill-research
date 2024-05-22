@@ -105,6 +105,13 @@ keytool -importcert -file ca.crt -alias logstashCA -keystore ca.jks -storepass d
 ```
 
 
+### 연결 확인
+- 터미널에서 인증서 연결 확인
+```shell
+openssl s_client -CAfile ca.crt -cert client.crt -key client.key -connect localhost:50000
+```
+
+
 # References
 - https://github.com/logfellow/logstash-logback-encoder?tab=readme-ov-file#tcp-appenders
 - https://www.elastic.co/guide/en/logstash/current/plugins-inputs-tcp.html#plugins-inputs-tcp-ssl_certificate_authorities
