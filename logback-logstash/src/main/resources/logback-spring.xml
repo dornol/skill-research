@@ -7,7 +7,7 @@
     <springProperty name="LOGSTASH_URL" source="logstash.url" />
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_URL:-127.0.0.1:5044}</destination>
+        <destination>${LOGSTASH_URL}</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc />
