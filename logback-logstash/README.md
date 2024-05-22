@@ -103,3 +103,10 @@ keytool -importcert -file ca.crt -alias logstashCA -keystore ca.jks -storepass d
 
 # path 에 JAVA_HOME%bin 추가 필요 
 ```
+
+
+# References
+- https://github.com/logfellow/logstash-logback-encoder?tab=readme-ov-file#tcp-appenders
+- https://www.elastic.co/guide/en/logstash/current/plugins-inputs-tcp.html#plugins-inputs-tcp-ssl_certificate_authorities
+- https://logback.qos.ch/manual/usingSSL.html
+- https://github.com/deviantony/docker-elk
