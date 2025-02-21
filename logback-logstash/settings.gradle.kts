@@ -1,1 +1,1 @@
-rootProject.name = "logback-logstash-test"
+rootProject.name = "logback-logstash"

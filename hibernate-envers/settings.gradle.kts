@@ -1,1 +1,1 @@
-rootProject.name = "hibernate-envers-test"
+rootProject.name = "hibernate-envers"

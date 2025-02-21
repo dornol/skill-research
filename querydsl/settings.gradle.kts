@@ -1,1 +1,1 @@
-rootProject.name = "querydsl-test"
+rootProject.name = "querydsl"

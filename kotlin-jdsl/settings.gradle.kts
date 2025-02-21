@@ -1,1 +1,1 @@
-rootProject.name = "kotlin-jdsl-test"
+rootProject.name = "kotlin-jdsl"
