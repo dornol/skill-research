@@ -46,10 +46,17 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+
+// ref: https://github.com/etiennestuder/gradle-jooq-plugin
 jooq {
     configurations {
         create("main") {
+
             generateSchemaSourceOnCompilation.set(true)
+            // true 로 설정 시 빌드(실행) 시 마다 generate 한다.
+            // false 로 설정 시 수동으로 generate?
+
+
             jooqConfiguration.apply {
                 logging = Logging.WARN
                 jdbc.apply {
@@ -85,12 +92,16 @@ jooq {
                         isDeprecated = false
                         isRecords = true
                         isImmutablePojos = true
-                        isFluentSetters = true
+                        isFluentSetters = true  // 메서드 체이닝 가능한 setter
                         isInterfaces = true
                     }
                     target.apply {
                         packageName = "dev.dornol.jooq.mytarget"
-                        directory = "build/generated/jooq/main"
+
+                        directory = "build/generated/jooq"
+                        // 생성전략
+                        // 1. build 경로에 생성
+                        // 2. src 밑에 생성해서 vcs에 commit 할 수도 있음.
                     }
                     strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
