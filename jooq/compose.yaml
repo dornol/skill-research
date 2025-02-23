@@ -1,5 +1,5 @@
 services:
-  postgres:
+  database:
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
@@ -7,4 +7,4 @@ services:
       POSTGRES_DB: postgres
       TZ: Asia/Seoul
     ports:
-      - '5432:5432'
+      - '5432'

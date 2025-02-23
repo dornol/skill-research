@@ -33,9 +33,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.springframework.boot:spring-boot-docker-compose")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.testcontainers:postgresql:1.20.5")
 
     jooqGenerator("org.postgresql:postgresql:42.7.2")
     jooqGenerator("org.jooq:jooq:${jooqVersion}")
@@ -52,7 +54,7 @@ jooq {
     configurations {
         create("main") {
 
-            generateSchemaSourceOnCompilation.set(true)
+            generateSchemaSourceOnCompilation.set(false)
             // true 로 설정 시 빌드(실행) 시 마다 generate 한다.
             // false 로 설정 시 수동으로 generate?
 
@@ -96,9 +98,9 @@ jooq {
                         isInterfaces = true
                     }
                     target.apply {
-                        packageName = "dev.dornol.jooq.mytarget"
+                        packageName = "dev.dornol.jooq.domain"
 
-                        directory = "build/generated/jooq"
+                        directory = "src/main/generated/jooq"
                         // 생성전략
                         // 1. build 경로에 생성
                         // 2. src 밑에 생성해서 vcs에 commit 할 수도 있음.

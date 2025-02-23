@@ -16,7 +16,7 @@ public interface JooqConditionSupportBase {
 
         if (!fields.isEmpty() && StringUtils.hasText(text)) {
             for (var field : fields) {
-                condition = condition.or(field.eq(text));
+                condition = condition.or(field.contains(text));
             }
         }
 

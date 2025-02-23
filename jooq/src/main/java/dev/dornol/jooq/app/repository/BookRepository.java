@@ -1,7 +1,7 @@
 package dev.dornol.jooq.app.repository;
 
 import dev.dornol.jooq.app.dto.*;
-import dev.dornol.jooq.mytarget.tables.records.BookRecord;
+import dev.dornol.jooq.domain.tables.records.BookRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static dev.dornol.jooq.mytarget.Tables.AUTHOR;
-import static dev.dornol.jooq.mytarget.Tables.BOOK;
+import static dev.dornol.jooq.domain.Tables.AUTHOR;
+import static dev.dornol.jooq.domain.Tables.BOOK;
 
 @Repository
 @RequiredArgsConstructor
@@ -62,6 +62,11 @@ public class BookRepository implements JooqConditionSupportBase {
                 .fetchOne(bookWithAuthorDtoRecordMapper());
     }
 
+    /**
+     * 조건 조회
+     * @param condition 검색조건
+     * @return 도서 정보 + 저자 정보
+     */
     @Transactional(readOnly = true)
     public List<BookWithAuthorDto> findAllByCondition(SearchCondition condition) {
 
@@ -84,14 +89,24 @@ public class BookRepository implements JooqConditionSupportBase {
                 .fetch(bookWithAuthorDtoRecordMapper());
     }
 
+    /**
+     * 도서정보 입력
+     * @param book 도서정보
+     * @return bookId
+     */
     @Transactional
     public long save(BookInsertDto book) {
-        BookRecord bookRecord = dsl.insertInto(BOOK, BOOK.TITLE, BOOK.AUTHOR_ID)
-                .values(book.title(), book.authorId())
-                .returning(BOOK.ID)
-                .fetchOptional()
-                .orElseThrow();
-        return bookRecord.getId();
+        BookRecord newBook = dsl.newRecord(BOOK);
+        newBook.setTitle(book.title());
+        newBook.setAuthorId(book.authorId());
+        newBook.store();
+        return newBook.getId();
+//        return dsl.insertInto(BOOK, BOOK.TITLE, BOOK.AUTHOR_ID)
+//                .values(book.title(), book.authorId())
+//                .returningResult(BOOK.ID)
+//                .fetchOptional()
+//                .orElseThrow()
+//                .get(BOOK.ID);
     }
 
     private RecordMapper<Record, BookWithAuthorDto> bookWithAuthorDtoRecordMapper() {

@@ -5,31 +5,37 @@ import dev.dornol.jooq.app.dto.BookInsertDto;
 import dev.dornol.jooq.app.dto.BookWithAuthorDto;
 import dev.dornol.jooq.app.dto.SearchCondition;
 import dev.dornol.jooq.app.dto.enums.SearchType;
-import dev.dornol.jooq.mytarget.Tables;
-import dev.dornol.jooq.mytarget.tables.records.AuthorRecord;
-import dev.dornol.jooq.mytarget.tables.records.BookRecord;
+import dev.dornol.jooq.domain.Tables;
+import dev.dornol.jooq.domain.tables.records.AuthorRecord;
+import dev.dornol.jooq.domain.tables.records.BookRecord;
 import org.assertj.core.api.WithAssertions;
 import org.jooq.DSLContext;
 import org.jooq.Result;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@SpringBootTest
+@Transactional
+@JooqTest
 class BookRepositoryTest implements WithAssertions {
 
     private static final Logger log = LoggerFactory.getLogger(BookRepositoryTest.class);
 
-    @Autowired
     BookRepository bookRepository;
 
     @Autowired
     DSLContext dsl;
+
+    @BeforeEach
+    void setUp() {
+        bookRepository = new BookRepository(dsl);
+    }
 
     @Test
     void findById() throws Exception {
@@ -95,6 +101,7 @@ class BookRepositoryTest implements WithAssertions {
 
         //then
         log.info("books: {}", books);
+        assertThat(books).isNotEmpty();
         assertThat(books.stream().allMatch(book -> book.title().contains(condition.text()) || book.author().name().contains(condition.text()))).isTrue();
     }
 
@@ -108,6 +115,7 @@ class BookRepositoryTest implements WithAssertions {
 
         //then
         log.info("books: {}", books);
+        assertThat(books).isNotEmpty();
         assertThat(books.stream().allMatch(book -> book.title().contains(condition.text()))).isTrue();
     }
 
@@ -121,11 +129,11 @@ class BookRepositoryTest implements WithAssertions {
 
         //then
         log.info("books: {}", books);
+        assertThat(books).isNotEmpty();
         assertThat(books.stream().allMatch(book -> book.author().name().contains(condition.text()))).isTrue();
     }
 
     @Test
-    @Transactional
     void save() throws Exception {
         //given
         Result<AuthorRecord> authors = dsl.fetch(Tables.AUTHOR);
