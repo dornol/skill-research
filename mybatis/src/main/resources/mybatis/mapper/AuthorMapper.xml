@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="dev.dornol.mybatis.app.repository.AuthorMapper">
+
+    <resultMap id="withBooks" type="dev.dornol.mybatis.app.dto.AuthorWithBooksDto">
+        <id property="id" column="id"/>
+        <id property="name" column="name"/>
+        <collection property="books" ofType="dev.dornol.mybatis.app.dto.BookDto" column="id"
+                    select="dev.dornol.mybatis.app.repository.BookMapper.findByAuthorId"/>
+    </resultMap>
+
+    <select id="findWithBooksById" resultMap="withBooks">
+        select *
+        from author a
+        where id = #{authorId}
+    </select>
+
+</mapper>

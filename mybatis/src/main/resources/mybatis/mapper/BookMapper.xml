@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.dornol.mybatis.app.repository.BookMapper" >
+
+    <resultMap id="withAuthor" type="dev.dornol.mybatis.app.dto.BookWithAuthorDto" autoMapping="true" >
+        <!--<id property="id" column="id" />
+        <id property="title" column="title" />
+        <id property="createdDate" column="created_date" />
+        <id property="updatedDate" column="updated_date" />-->
+        <association property="author" javaType="dev.dornol.mybatis.app.dto.Author"  >
+            <id property="id" column="author_id" />
+            <id property="name" column="name" />
+        </association>
+    </resultMap>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true" >
+        insert into book(title, author_id)
+        values (#{title}, #{authorId})
+    </insert>
+
+    <select id="findAll" resultType="dev.dornol.mybatis.app.dto.BookDto">
+        select *
+        from book b
+        order by b.id desc
+    </select>
+
+    <select id="findById" resultType="dev.dornol.mybatis.app.dto.BookDto">
+        select *
+        from book b
+        where b.id = #{id}
+    </select>
+
+    <select id="findWithAuthorAll" resultMap="withAuthor" >
+        select *
+        from book b
+            inner join author a on b.author_id = a.id
+        order by b.id desc
+    </select>
+
+    <select id="findByAuthorId" resultType="dev.dornol.mybatis.app.dto.BookDto">
+        select *
+        from book b
+        where b.author_id = #{authorId}
+    </select>
+
+</mapper>
