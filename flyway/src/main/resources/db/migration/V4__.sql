@@ -1,0 +1,21 @@
+CREATE TABLE publisher
+(
+    id   BIGINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255)          NOT NULL,
+    CONSTRAINT pk_publisher PRIMARY KEY (id)
+);
+
+ALTER TABLE book
+    ADD publisher_id BIGINT NULL;
+
+ALTER TABLE book
+    ADD CONSTRAINT FK_BOOK_ON_PUBLISHER FOREIGN KEY (publisher_id) REFERENCES publisher (id);
+
+ALTER TABLE author
+    DROP COLUMN age;
+
+ALTER TABLE author
+    MODIFY name VARCHAR(255) NOT NULL;
+
+ALTER TABLE book
+    MODIFY title VARCHAR(255) NOT NULL;

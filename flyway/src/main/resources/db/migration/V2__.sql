@@ -1,0 +1,11 @@
+ALTER TABLE author
+    ADD age INT NULL;
+
+ALTER TABLE author
+    MODIFY age INT NOT NULL;
+
+ALTER TABLE book
+    ADD price BIGINT NULL;
+
+ALTER TABLE book
+    MODIFY price BIGINT NOT NULL;
